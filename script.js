@@ -74,40 +74,42 @@ function clearDisplay() {
 }
 
 function calculateCompoundInterest() {
-    const principal = parseFloat(document.getElementById('ci-principal').value);
-    const period = parseInt(document.getElementById('ci-period').value);
-    const periodType = document.getElementById('ci-period-type').value;
-    const rate = parseFloat(document.getElementById('ci-rate').value) / 100;
+    const principal = parseFloat(document.getElementById('dM').value.replace(/,/g, ''));
+    const period = parseInt(document.getElementById('dC').value, 10);
+    const periodType = document.getElementById('cC').value; // "d" for days, "m" for months
+    const dailyRate = parseFloat(document.getElementById('dR').value) / 100;
 
-    const compoundFrequency = periodType === "months" ? 12 : 365;
     let balance = principal;
     let totalInterest = 0;
-    const tableBody = document.getElementById('ci-table-body');
+    const tableBody = document.getElementById('content1');
     tableBody.innerHTML = '';
 
+    let tableContent = '<table><tr><th>기 간</th><th>총 금 액</th><th>수 익</th><th>수 익 률</th></tr>';
+
     for (let i = 1; i <= period; i++) {
-        let interest = balance * (rate / compoundFrequency);
-        balance += interest;
-        totalInterest += interest;
-        const row = document.createElement('tr');
-        const periodCell = document.createElement('td');
-        const interestCell = document.createElement('td');
-        const balanceCell = document.createElement('td');
-        const rateCell = document.createElement('td');
+        const previousBalance = balance;
+        balance *= (1 + dailyRate); // Apply compounded daily or monthly interest
 
-        periodCell.textContent = i + (periodType === "months" ? "개월" : "일");
-        interestCell.textContent = interest.toFixed(2);
-        balanceCell.textContent = balance.toFixed(2);
-        rateCell.textContent = ((totalInterest / balance) * 100).toFixed(2);
+        const interestEarned = balance - previousBalance;
+        totalInterest += interestEarned;
 
-        row.appendChild(periodCell);
-        row.appendChild(interestCell);
-        row.appendChild(balanceCell);
-        row.appendChild(rateCell);
-        tableBody.appendChild(row);
+        // Create and append row string
+        const periodLabel = `${i} ${(periodType === "m" ? "개월" : "일")}`;
+        const balanceText = `₩${Math.round(balance).toLocaleString()}`;
+        const interestText = `₩${Math.round(interestEarned).toLocaleString()}`;
+        const interestRateText = `${((interestEarned / principal) * 100).toFixed(2)}%`;
+
+        tableContent += `<tr><td>${periodLabel}</td><td>${balanceText}</td><td>${interestText}</td><td>${interestRateText}</td></tr>`;
     }
 
-    saveHistory(`복리 계산: 원금 ₩${principal}, ${period}${periodType === "months" ? "개월" : "일"}간, 잔액 ₩${balance.toFixed(2)}`);
+    tableContent += '</table>';
+    tableBody.innerHTML = tableContent;
+
+    const pageTitle = `복리계산기: 투자원금 ₩${principal.toLocaleString()}원, 기간 ${period}${periodType === "m" ? "개월" : "일"}, 최종 잔액 ₩${Math.round(balance).toLocaleString()}`;
+    document.title = pageTitle;
+
+    // Optionally, update browser history if needed
+    history.pushState(null, pageTitle, `?dM=${principal}&dC=${period}&cC=${periodType}&dR=${dailyRate * 100}`);
 }
 
 function saveHistory(operation) {
