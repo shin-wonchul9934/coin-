@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>통합 계산기 웹페이지</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .result-box {
+            font-weight: bold; /* Make the text bold */
+            background-color: #e0f7fa; /* Soft blue background */
+            border: 1px solid #007bff; /* Border to match surrounding blue theme */
+            padding: 5px; /* Padding to ensure text isn't right up against the border */
+            border-radius: 4px; /* Rounded corners for aesthetic */
+            display: inline-block; /* Make the result display nicely alongside text */
+            max-width: 100%; /* Ensure it doesn't overflow container */
+            overflow-x: auto; /* Handle overflow if numbers are excessively large */
+        }
+    </style>
+</head>
+<body>
+    <h1>통합 계산기 웹페이지</h1>
+
+    <!-- 환율 계산기 -->
+    <section id="currency-calculator">
+        <h2>환율 계산기</h2>
+        <label>환율:</label>
+        <input type="number" id="exchange-rate-input" value="1350" min="0.01" step="0.01"><br>
+        <input type="number" id="won-input" placeholder="한화 (₩)">
+        <input type="number" id="usd-input" placeholder="달러 ($)">
+        <button onclick="calculateCurrency()">계산</button>
+    </section>
+
+    <!-- 퍼센트 계산기 -->
+    <section id="percent-calculator">
+        <h2>퍼센트 계산기</h2>
+        <div>
+            <label>전체값: <input type="number" id="pc-total-value"></label><br>
+            <label>%는 얼마?: <input type="number" id="pc-percentage-value"></label><button onclick="calculatePercentOf()">계산</button><br>
+            <label>몇%인가?: <input type="number" id="pc-value"></label><button onclick="calculatePercentIs()">계산</button><br>
+            <label>증감으로 변하면?: <input type="number" id="pc-change-value"></label><button onclick="calculateValueChange()">계산</button><br>
+            <label>% 증가하면?: <input type="number" id="pc-increase-percent"></label><button onclick="calculateIncreasePercent()">계산</button>
+            <div>
+                <strong>결과:</strong> <span id="percent-result" class="result-box"></span>
+            </div>
+    </section>
+
+    <!-- 일반 계산기 -->
+    <section id="basic-calculator">
+        <h2>일반 계산기</h2>
+        <input type="text" id="calc-display" disabled>
+        <div>
+            <button onclick="pressKey('7')">7</button><button onclick="pressKey('8')">8</button><button onclick="pressKey('9')">9</button><button onclick="pressKey('/')">/</button><br>
+            <button onclick="pressKey('4')">4</button><button onclick="pressKey('5')">5</button><button onclick="pressKey('6')">6</button><button onclick="pressKey('*')">*</button><br>
+            <button onclick="pressKey('1')">1</button><button onclick="pressKey('2')">2</button><button onclick="pressKey('3')">3</button><button onclick="pressKey('-')">-</button><br>
+            <button onclick="pressKey('0')">0</button><button onclick="pressKey('.')">.</button><button onclick="calculateResult()">=</button><button onclick="clearDisplay()">C</button><br>
+            <button onclick="pressKey('+')">+</button>
+        </div>
+    </section>
+
+    <!-- 복리 계산기 -->
+    <section id="compound-interest-calculator">
+        <h2>복리 계산기</h2>
+        <div>
+            <label>투자원금: <input type="number" id="ci-principal"></label><br>
+            <label>계산기간: <input type="number" id="ci-period">
+                <select id="ci-period-type">
+                    <option value="days">일</option>
+                    <option value="months">개월</option>
+                </select>
+            </label><br>
+            <label>목표수익률(%): <input type="number" id="ci-rate"></label>
+            <button onclick="calculateCompoundInterest()">계산</button>
+        </div>
+        <table id="ci-result-table">
+            <thead>
+                <tr>
+                    <th>기간</th>
+                    <th>수익(원)</th>
+                    <th>총급액(원)</th>
+                    <th>수익률(%)</th>
+                </tr>
+            </thead>
+            <tbody id="ci-table-body"></tbody>
+        </table>
+    </section>
+
+    <!-- 계산 히스토리 -->
+    <section id="history">
+        <h2>히스토리</h2>
+        <ul id="history-list"></ul>
+        <button onclick="clearHistory()">히스토리 지우기</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
