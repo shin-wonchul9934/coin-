@@ -62,27 +62,16 @@
     <section id="compound-interest-calculator">
         <h2>복리 계산기</h2>
         <div>
-            <label>투자원금: <input type="number" id="ci-principal"></label><br>
-            <label>계산기간: <input type="number" id="ci-period">
-                <select id="ci-period-type">
-                    <option value="days">일</option>
-                    <option value="months">개월</option>
-                </select>
-            </label><br>
-            <label>목표수익률(%): <input type="number" id="ci-rate"></label>
-            <button onclick="calculateCompoundInterest()">계산</button>
+            투자원금: <input id="dM" type="tel" name="dM" value="" class="form-control" /> 원<br>
+            계산기간: <input id="dC" type="tel" name="dC" value="" maxlength="" class="form-control" />
+            <select id="cC" name="cC" class="form-control">
+                <option value="d" selected="selected">일</option>
+                <option value="m">개월</option>
+            </select> <br>
+            목표수익률: <input id="dR" type="number" name="dR" value="" class="form-control" /> % <br>
+            <input class="btn btn-primary" type="button" value="계산" onclick="calculateCompoundInterest();" />
         </div>
-        <table id="ci-result-table">
-            <thead>
-                <tr>
-                    <th>기간</th>
-                    <th>수익(원)</th>
-                    <th>총급액(원)</th>
-                    <th>수익률(%)</th>
-                </tr>
-            </thead>
-            <tbody id="ci-table-body"></tbody>
-        </table>
+        <div id="content1"></div>
     </section>
 
     <!-- 계산 히스토리 -->
